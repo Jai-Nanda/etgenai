@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, PieChart, Pie, Cell } from 'recharts'
-import { analyzeExpenses } from '../../utils/analysis'
 
 interface Expense {
   id: string;
@@ -26,11 +25,28 @@ export default function Dashboard() {
   }, [])
 
   const fetchExpenses = async () => {
+  try {
+    // 1. Get expenses
     const res = await fetch('/api/expenses')
     const data = await res.json()
     setExpenses(data)
-    setAnalysis(analyzeExpenses(data))
+
+    // 2. Call analyze API 🔥
+    const analyzeRes = await fetch('/api/analyze', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ expenses: data }),
+    })
+
+    const analysisData = await analyzeRes.json()
+    setAnalysis(analysisData)
+
+  } catch (error) {
+    console.error("Error:", error)
   }
+}
 
   const addExpense = async (e: React.FormEvent) => {
     e.preventDefault()
