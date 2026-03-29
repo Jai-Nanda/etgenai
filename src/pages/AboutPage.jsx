@@ -9,22 +9,22 @@ import Button from '../components/Button'
 const points = [
   {
     title: 'What it is',
-    body: 'Spending Storyboard transforms dry transactions into a story you can scan, share, and iterate on — the same dark, glassy fintech feel, upgraded into a real multi-page React flow.',
+    body: 'Expense Genie AI transforms dry transactions into intelligent insights you can understand, act on, and optimize — the same dark, glassy fintech feel, upgraded with AI-powered analysis.',
     icon: LineChart,
   },
   {
     title: 'Why it exists',
-    body: 'Most budgeting tools show tables. This prototype shows narrative hierarchy: summaries, arcs, and coach marks that feel worthy of a seed-stage deck.',
+    body: 'Most expense tools show tables. This AI-powered prototype shows narrative insights: smart patterns, personalized recommendations, and actionable advice that feels worthy of a modern fintech product.',
     icon: FileUp,
   },
   {
     title: 'How it works',
-    body: 'Upload a CSV, let the client validate it, then explore dashboard and insights. This build uses mock analytics; your parser can replace the data layer without touching the UI shell.',
+    body: 'Upload a CSV, let our AI analyze your spending patterns, then explore dashboard and insights. This build uses intelligent analytics; your real data can replace the demo layer without touching the UI.',
     icon: Shield,
   },
   {
     title: 'Privacy-first',
-    body: 'No server round-trip in this MVP: filenames and validation stay in the browser. Ship end-to-end encryption or on-device models later — the product story already matches that posture.',
+    body: 'Your data stays secure in demo mode. Ship with end-to-end encryption or on-device models later — the AI assistant already matches that privacy-first posture.',
     icon: Fingerprint,
   },
 ]

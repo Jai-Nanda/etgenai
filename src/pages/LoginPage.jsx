@@ -86,7 +86,7 @@ export default function LoginPage() {
 
   return (
     <PageContainer>
-      <div className="min-h-screen flex items-center justify-center px-4 py-12">
+      <div className="min-h-screen flex items-start justify-center px-4 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -95,7 +95,7 @@ export default function LoginPage() {
         >
           <AuthFormCard
             title="Welcome back"
-            subtitle="Continue your financial story with AI-powered insights"
+            subtitle="Continue your expense tracking with AI-powered insights"
           >
             <form onSubmit={handleSubmit} className="space-y-5">
               {errors.general && (
@@ -171,7 +171,7 @@ export default function LoginPage() {
             
             <div className="text-center">
               <p className="text-xs text-on-surface-variant/60">
-                Private. Secure. Story-driven finance insights.
+                Private. Secure. AI-powered expense insights.
               </p>
             </div>
           </AuthFormCard>

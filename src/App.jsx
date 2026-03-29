@@ -3,6 +3,7 @@ import { AppProvider } from './context/AppContext'
 import { AuthProvider } from './context/AuthContext'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
+import ProtectedRoute from './components/ProtectedRoute'
 import UploadPage from './pages/UploadPage'
 import DashboardPage from './pages/DashboardPage'
 import InsightsPage from './pages/InsightsPage'
@@ -13,7 +14,7 @@ import ForgotPasswordPage from './pages/ForgotPasswordPage'
 
 function Shell({ children }) {
   return (
-    <div className="relative flex min-h-screen flex-col">
+    <div className="relative flex flex-col overflow-x-hidden">
       <div
         aria-hidden
         className="ambient-orb pointer-events-none absolute -left-32 top-0 h-[420px] w-[420px] rounded-full bg-primary/15 blur-[100px] transition-opacity duration-500"
@@ -27,7 +28,7 @@ function Shell({ children }) {
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(173,198,255,0.08),transparent_45%),radial-gradient(circle_at_80%_10%,rgba(79,219,200,0.06),transparent_40%),radial-gradient(circle_at_50%_120%,rgba(192,193,255,0.05),transparent_55%)]"
       />
       <Navbar />
-      <main className="relative z-10 flex-1">{children}</main>
+      <main className="relative z-10 flex-1 overflow-x-hidden">{children}</main>
       <Footer />
     </div>
   )
@@ -35,7 +36,7 @@ function Shell({ children }) {
 
 function AuthShell({ children }) {
   return (
-    <div className="relative min-h-screen">
+    <div className="relative overflow-x-hidden">
       <div
         aria-hidden
         className="ambient-orb pointer-events-none absolute -left-32 top-0 h-[420px] w-[420px] rounded-full bg-primary/15 blur-[100px] transition-opacity duration-500"
@@ -58,7 +59,7 @@ export default function App() {
     <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <AppProvider>
         <AuthProvider>
-          <div className="min-h-screen bg-background text-on-surface font-body antialiased selection:bg-primary/25">
+          <div className="bg-background text-on-surface font-body antialiased selection:bg-primary/25 overflow-x-hidden">
             <Routes>
               <Route path="/" element={<Navigate to="/login" replace />} />
               
@@ -92,33 +93,41 @@ export default function App() {
               <Route
                 path="/upload"
                 element={
-                  <Shell>
-                    <UploadPage />
-                  </Shell>
+                  <ProtectedRoute>
+                    <Shell>
+                      <UploadPage />
+                    </Shell>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/dashboard"
                 element={
-                  <Shell>
-                    <DashboardPage />
-                  </Shell>
+                  <ProtectedRoute>
+                    <Shell>
+                      <DashboardPage />
+                    </Shell>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/insights"
                 element={
-                  <Shell>
-                    <InsightsPage />
-                  </Shell>
+                  <ProtectedRoute>
+                    <Shell>
+                      <InsightsPage />
+                    </Shell>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path="/about"
                 element={
-                  <Shell>
-                    <AboutPage />
-                  </Shell>
+                  <ProtectedRoute>
+                    <Shell>
+                      <AboutPage />
+                    </Shell>
+                  </ProtectedRoute>
                 }
               />
               

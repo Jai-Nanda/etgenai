@@ -17,11 +17,11 @@ export default function Footer() {
           <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:justify-between">
             <div className="max-w-md space-y-2">
               <p className="font-headline text-lg font-bold text-on-surface">
-                Spending Storyboard
+                Expense Genie AI
               </p>
               <p className="text-sm text-on-surface-variant leading-relaxed">
-                Turn a bank-style CSV into a clear, story-driven read on where your money went — built
-                for demos, portfolios, and privacy-minded early adopters.
+                Turn your expenses into intelligent insights with AI-powered analysis — built
+                for smart expense tracking and privacy-minded users.
               </p>
             </div>
             <div className="grid grid-cols-2 gap-6 sm:grid-cols-3 sm:gap-10">
@@ -49,7 +49,7 @@ export default function Footer() {
                 <ul className="mt-3 space-y-2">
                   <li>
                     <a
-                      href="mailto:hello@spendingstoryboard.app"
+                      href="mailto:hello@expensegenie.ai"
                       className="inline-flex items-center gap-2 text-sm text-on-surface hover:text-primary transition-colors"
                     >
                       <Mail className="h-4 w-4 opacity-80" aria-hidden />
@@ -86,8 +86,8 @@ export default function Footer() {
             </div>
           </div>
           <p className="mt-8 text-xs text-on-surface-variant/90">
-            © {new Date().getFullYear()} Spending Storyboard. Demo frontend — no ledger data is sent to
-            a server in this MVP.
+            © {new Date().getFullYear()} Expense Genie AI. AI-powered expense tracking — no data is sent to
+            a server in demo mode.
           </p>
         </GlassCard>
       </div>

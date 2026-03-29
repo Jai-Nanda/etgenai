@@ -96,14 +96,14 @@ export default function Navbar() {
           onClick={() => setOpen(false)}
         >
           <span className="flex h-9 w-9 items-center justify-center rounded-xl border border-primary/30 bg-primary/10 text-sm font-extrabold font-headline text-primary shadow-[0_0_24px_-12px_rgba(173,198,255,0.55)] group-hover:border-primary/50 transition-colors">
-            SS
+            EG
           </span>
           <div className="leading-tight">
             <span className="block font-headline text-sm font-bold tracking-tight text-on-surface">
-              Spending Storyboard
+              Expense Genie AI
             </span>
             <span className="hidden text-[11px] text-on-surface-variant sm:block">
-              CSV → story-driven insights
+              Turn your expenses into intelligent insights
             </span>
           </div>
         </NavLink>
@@ -174,7 +174,7 @@ export default function Navbar() {
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.22 }}
-            className="lg:hidden border-t border-outline-variant/25 bg-surface/95 backdrop-blur-xl overflow-hidden"
+            className="lg:hidden border-t border-outline-variant/25 bg-surface/95 backdrop-blur-xl overflow-x-hidden"
             aria-label="Mobile main"
           >
             <div className="flex flex-col gap-1 px-4 py-3 sm:px-6">

@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react'
+import { authService } from '../services/authService.js'
 
 const AuthContext = createContext(null)
 
@@ -6,106 +7,158 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
   const [isLoading, setIsLoading] = useState(false)
   const [isGuest, setIsGuest] = useState(false)
+  const [error, setError] = useState(null)
 
   // Check for existing session on mount
   useEffect(() => {
-    const savedUser = localStorage.getItem('storyboard_user')
-    const savedGuest = localStorage.getItem('storyboard_guest')
-    
-    if (savedUser) {
-      setUser(JSON.parse(savedUser))
-    } else if (savedGuest) {
-      setIsGuest(true)
-    }
+    initializeAuth()
   }, [])
+
+  const initializeAuth = async () => {
+    try {
+      // Check for guest session first
+      const guestSession = localStorage.getItem('guest_session')
+      if (guestSession === 'true') {
+        setIsGuest(true)
+        return
+      }
+
+      // Then check for authenticated session
+      const token = authService.getToken()
+      if (token) {
+        setIsLoading(true)
+        const response = await authService.getProfile()
+        if (response.success) {
+          setUser(response.data)
+        } else {
+          // Token invalid, clear it
+          authService.logout()
+        }
+      }
+    } catch (error) {
+      console.error('Auth initialization error:', error)
+      authService.logout()
+    } finally {
+      setIsLoading(false)
+    }
+  }
 
   const login = async (email, password) => {
     setIsLoading(true)
+    setError(null)
     
-    // Mock login logic
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    // Mock successful login
-    const mockUser = {
-      id: 'user_' + Date.now(),
-      email,
-      name: email.split('@')[0].charAt(0).toUpperCase() + email.split('@')[0].slice(1),
-      createdAt: new Date().toISOString()
+    try {
+      const response = await authService.login(email, password)
+      
+      if (response.success) {
+        setUser(response.data.user)
+        setIsGuest(false)
+        return { success: true }
+      } else {
+        setError(response.message || 'Login failed')
+        return { success: false, message: response.message }
+      }
+    } catch (error) {
+      const authError = authService.handleAuthError(error)
+      setError(authError.message)
+      return { success: false, message: authError.message }
+    } finally {
+      setIsLoading(false)
     }
-    
-    setUser(mockUser)
-    setIsGuest(false)
-    localStorage.setItem('storyboard_user', JSON.stringify(mockUser))
-    localStorage.removeItem('storyboard_guest')
-    setIsLoading(false)
-    
-    return { success: true }
   }
 
   const signup = async (name, email, password) => {
     setIsLoading(true)
+    setError(null)
     
-    // Mock signup logic
-    await new Promise(resolve => setTimeout(resolve, 1500))
-    
-    const mockUser = {
-      id: 'user_' + Date.now(),
-      email,
-      name,
-      createdAt: new Date().toISOString()
+    try {
+      const response = await authService.signup(name, email, password)
+      
+      if (response.success) {
+        setUser(response.data.user)
+        setIsGuest(false)
+        return { success: true }
+      } else {
+        setError(response.message || 'Signup failed')
+        return { success: false, message: response.message }
+      }
+    } catch (error) {
+      const authError = authService.handleAuthError(error)
+      setError(authError.message)
+      return { success: false, message: authError.message }
+    } finally {
+      setIsLoading(false)
     }
-    
-    setUser(mockUser)
-    setIsGuest(false)
-    localStorage.setItem('storyboard_user', JSON.stringify(mockUser))
-    localStorage.removeItem('storyboard_guest')
-    setIsLoading(false)
-    
-    return { success: true }
   }
 
   const loginWithGoogle = async () => {
+    // For now, this is a placeholder for future Google OAuth integration
     setIsLoading(true)
+    setError(null)
     
-    // Mock Google login
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    
-    const mockUser = {
-      id: 'google_' + Date.now(),
-      email: 'user@gmail.com',
-      name: 'Google User',
-      avatar: 'https://ui-avatars.com/api/?name=Google+User&background=4d8eff&color=fff',
-      provider: 'google',
-      createdAt: new Date().toISOString()
+    try {
+      // Simulate Google login with demo account
+      const response = await authService.login('demo@example.com', 'demo123456')
+      
+      if (response.success) {
+        setUser(response.data.user)
+        setIsGuest(false)
+        return { success: true }
+      } else {
+        setError('Google login failed')
+        return { success: false, message: 'Google login failed' }
+      }
+    } catch (error) {
+      setError('Google login failed')
+      return { success: false, message: 'Google login failed' }
+    } finally {
+      setIsLoading(false)
     }
-    
-    setUser(mockUser)
-    setIsGuest(false)
-    localStorage.setItem('storyboard_user', JSON.stringify(mockUser))
-    localStorage.removeItem('storyboard_guest')
-    setIsLoading(false)
-    
-    return { success: true }
   }
 
   const continueAsGuest = () => {
     setUser(null)
     setIsGuest(true)
-    localStorage.setItem('storyboard_guest', 'true')
-    localStorage.removeItem('storyboard_user')
+    setError(null)
+    authService.logout()
+    // Store guest session
+    localStorage.setItem('guest_session', 'true')
   }
 
   const logout = () => {
     setUser(null)
     setIsGuest(false)
-    localStorage.removeItem('storyboard_user')
-    localStorage.removeItem('storyboard_guest')
+    setError(null)
+    authService.logout()
+    // Clear guest session
+    localStorage.removeItem('guest_session')
   }
 
-  const forgotPassword = async (email) => {
-    // Mock forgot password
-    await new Promise(resolve => setTimeout(resolve, 1000))
-    return { success: true, message: 'Reset link sent to your email' }
+  const updateProfile = async (name) => {
+    setIsLoading(true)
+    setError(null)
+    
+    try {
+      const response = await authService.updateProfile(name)
+      
+      if (response.success) {
+        setUser(response.data)
+        return { success: true }
+      } else {
+        setError(response.message || 'Profile update failed')
+        return { success: false, message: response.message }
+      }
+    } catch (error) {
+      const authError = authService.handleAuthError(error)
+      setError(authError.message)
+      return { success: false, message: authError.message }
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const clearError = () => {
+    setError(null)
   }
 
   const value = {
@@ -113,12 +166,14 @@ export function AuthProvider({ children }) {
     isGuest,
     isLoading,
     isAuthenticated: !!user || isGuest,
+    error,
     login,
     signup,
     loginWithGoogle,
     continueAsGuest,
     logout,
-    forgotPassword
+    updateProfile,
+    clearError
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

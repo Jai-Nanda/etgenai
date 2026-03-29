@@ -53,7 +53,7 @@ export default function ForgotPasswordPage() {
   if (success) {
     return (
       <PageContainer>
-        <div className="min-h-screen flex items-center justify-center px-4 py-12">
+        <div className="min-h-screen flex items-start justify-center px-4 py-12">
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -105,7 +105,7 @@ export default function ForgotPasswordPage() {
 
   return (
     <PageContainer>
-      <div className="min-h-screen flex items-center justify-center px-4 py-12">
+      <div className="min-h-screen flex items-start justify-center px-4 py-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -154,7 +154,7 @@ export default function ForgotPasswordPage() {
             
             <div className="text-center">
               <p className="text-xs text-on-surface-variant/60">
-                Private. Secure. Story-driven finance insights.
+                Private. Secure. AI-powered expense insights.
               </p>
             </div>
           </AuthFormCard>
